@@ -4,6 +4,8 @@ import { supabase } from '../lib/supabaseClient';
 const AuthContext = createContext(undefined);
 
 export function AuthProvider({ children }) {
+  const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
+  const emailRedirectTo = `${appUrl}/auth/confirm`;
   const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(true);
 
@@ -36,12 +38,19 @@ export function AuthProvider({ children }) {
   };
 
   const signUp = async (email, password) => {
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo },
+    });
     if (error) throw error;
   };
 
   const signInWithOtp = async (email) => {
-    const { error } = await supabase.auth.signInWithOtp({ email });
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo },
+    });
     if (error) throw error;
   };
 

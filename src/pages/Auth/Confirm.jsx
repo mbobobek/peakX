@@ -1,36 +1,37 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { supabase } from '../../lib/supabaseClient';
 
 export default function Confirm() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const { exchangeCodeForSession } = useAuth();
   const [status, setStatus] = useState('loading');
   const [message, setMessage] = useState('Hisobni tasdiqlash...');
 
   useEffect(() => {
     const code = params.get('code');
-    if (!code) {
-      setStatus('error');
-      setMessage('Tasdiqlash kodi topilmadi.');
-      return;
-    }
+    const hasHashToken = window.location.hash.includes('access_token');
 
-    const confirmSession = async () => {
+    const finishAuth = async () => {
       try {
-        await exchangeCodeForSession(code);
+        if (hasHashToken) {
+          await supabase.auth.getSessionFromUrl({ storeSession: true });
+        } else if (code) {
+          await supabase.auth.exchangeCodeForSession(code);
+        } else {
+          throw new Error('Tasdiqlash kodi topilmadi.');
+        }
         setStatus('success');
         setMessage('Tasdiqlandi! Dashboardga yo‘naltirilmoqda...');
-        setTimeout(() => navigate('/dashboard', { replace: true }), 1000);
+        setTimeout(() => navigate('/dashboard', { replace: true }), 800);
       } catch (err) {
         setStatus('error');
         setMessage(err.message);
       }
     };
 
-    confirmSession();
-  }, [exchangeCodeForSession, navigate, params]);
+    finishAuth();
+  }, [navigate, params]);
 
   const statusColors =
     status === 'success'
