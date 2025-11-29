@@ -1,26 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
 
 export default function Confirm() {
   const navigate = useNavigate();
-  const [params] = useSearchParams();
   const [status, setStatus] = useState('loading');
   const [message, setMessage] = useState('Hisobni tasdiqlash...');
 
   useEffect(() => {
-    const code = params.get('code');
-    const hasHashToken = window.location.hash.includes('access_token');
+    const url = window.location.href;
 
     const finishAuth = async () => {
       try {
-        if (hasHashToken) {
-          await supabase.auth.getSessionFromUrl({ storeSession: true });
-        } else if (code) {
-          await supabase.auth.exchangeCodeForSession(code);
-        } else {
-          throw new Error('Tasdiqlash kodi topilmadi.');
-        }
+        await supabase.auth.exchangeCodeForSession(url);
         setStatus('success');
         setMessage('Tasdiqlandi! Dashboardga yo‘naltirilmoqda...');
         setTimeout(() => navigate('/dashboard', { replace: true }), 800);
@@ -31,7 +23,7 @@ export default function Confirm() {
     };
 
     finishAuth();
-  }, [navigate, params]);
+  }, [navigate]);
 
   const statusColors =
     status === 'success'
