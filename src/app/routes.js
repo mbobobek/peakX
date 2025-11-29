@@ -13,18 +13,18 @@ export const routes = [
   { path: '/auth/reset-password', element: React.createElement(ResetPassword) },
   {
     path: '/dashboard',
-    element: (
-      <ProtectedRouteWrapper>
-        <div className="p-6 text-slate-900">Dashboard</div>
-      </ProtectedRouteWrapper>
+    element: React.createElement(
+      ProtectedRouteWrapper,
+      null,
+      React.createElement('div', { className: 'p-6 text-slate-900' }, 'Dashboard')
     ),
   },
   {
     path: '/test',
-    element: (
-      <ProtectedRouteWrapper>
-        <div className="p-6 text-slate-900">Test</div>
-      </ProtectedRouteWrapper>
+    element: React.createElement(
+      ProtectedRouteWrapper,
+      null,
+      React.createElement('div', { className: 'p-6 text-slate-900' }, 'Test')
     ),
   },
   { path: '/', element: React.createElement(Navigate, { to: '/dashboard', replace: true }) },
