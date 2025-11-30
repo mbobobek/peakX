@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { getHabits } from '../../../services/habits';
 import { getToday } from '../../../utils/dateUtils';
-import TodayHeader from './TodayHeader';
 import TodayProgress from './TodayProgress';
 import TodayHabitList from './TodayHabitList';
 import { isBetween } from '../../../utils/dateUtils';
@@ -68,12 +67,11 @@ export default function TodayOverview() {
   return (
     <div className="space-y-4">
       <div className="rounded-2xl card-light dark:card-dark p-6 shadow-sm">
-        <TodayHeader />
-        {error && <p className="mt-2 text-sm text-danger">{error}</p>}
+        {error && <p className="mb-2 text-sm text-danger">{error}</p>}
         {loading ? (
-          <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">Loading today&apos;s habits...</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300">Loading today&apos;s habits...</p>
         ) : (
-          <div className="mt-6 space-y-4">
+          <div className="space-y-4">
             <TodayProgress completed={completedToday} total={todaysHabits.length} />
             <TodayHabitList habits={todaysHabits} onLocalUpdate={handleLocalUpdate} />
           </div>

@@ -1,4 +1,3 @@
-import DashboardHeader from './DashboardHeader';
 import DashboardStats from './DashboardStats';
 import DashboardWeekly from './DashboardWeekly';
 import DashboardMonthly from './DashboardMonthly';
@@ -13,7 +12,6 @@ export default function Dashboard() {
     <div className="min-h-screen bg-slate-50 p-6 text-slate-900">
       <div className="mx-auto max-w-6xl space-y-6">
         <WelcomeHero />
-        <DashboardHeader user={null} />
         <TodayOverview />
 
         <div className="grid gap-4 md:grid-cols-2">
