@@ -58,7 +58,7 @@ export default function MonthlyHeatmap() {
   }, [days, habits]);
 
   return (
-    <div className="rounded-2xl card-light dark:card-dark p-6">
+    <div className="glass-card p-5 md:p-6 shadow-[0_12px_60px_rgba(0,0,0,0.06)]">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-slate-900">Monthly Heatmap</h3>
         {loading && <span className="text-xs text-slate-500">Loading...</span>}

@@ -26,7 +26,7 @@ export default function WeeklyPreview({ history = {} }) {
     <div className="mt-3 grid grid-cols-7 gap-2 text-center text-[11px] font-semibold text-slate-600">
       {weekdayStatus.map((s, idx) => (
         <div key={idx} className="flex flex-col items-center gap-1">
-          <span className={`h-3 w-3 rounded-full ${statusColors[s]}`} />
+          <span className={`h-2.5 w-2.5 rounded-full ${statusColors[s]}`} />
           <span>{weekdayLabels[idx]}</span>
         </div>
       ))}

@@ -17,3 +17,19 @@
 .card-dark {
   @apply bg-dark-surface border border-slate-700 shadow-inner;
 }
+
+.glass-card {
+  @apply bg-white/40 dark:bg-white/10 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-lg rounded-3xl transition-all;
+}
+
+.glass-light {
+  @apply bg-white/50 backdrop-blur-xl border border-white/30 shadow-lg;
+}
+
+.glass-dark {
+  @apply bg-[#0f0f15]/40 backdrop-blur-xl border border-white/10 shadow-lg;
+}
+
+.gradient-primary {
+  @apply bg-gradient-to-r from-[#6D5FFC] to-[#A88CFF];
+}

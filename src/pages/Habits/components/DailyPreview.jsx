@@ -13,7 +13,7 @@ export default function DailyPreview({ history = {} }) {
     <div className="mt-3 flex gap-2">
       {days.map((d) => {
         const status = history[d] || 'none';
-        return <span key={d} className={`h-3 w-3 rounded-full ${statusColors[status]}`} title={d} />;
+        return <span key={d} className={`h-2.5 w-2.5 rounded-full ${statusColors[status]}`} title={d} />;
       })}
     </div>
   );

@@ -18,27 +18,31 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50 p-6 text-slate-900">
-      <div className="mx-auto max-w-6xl space-y-6">
-        <WelcomeHero />
-        <ProgressSummary
-          completed={todayCompleted}
-          total={todayTotal}
-          totalHabits={totalHabits}
-          bestStreak={bestStreak}
-          currentStreak={currentStreak}
-        />
-        <TodayOverview />
+      <div className="mx-auto max-w-6xl space-y-6 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-6">
+        <div className="space-y-6">
+          <WelcomeHero />
+          <ProgressSummary
+            completed={todayCompleted}
+            total={todayTotal}
+            totalHabits={totalHabits}
+            bestStreak={bestStreak}
+            currentStreak={currentStreak}
+          />
+        </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-6 lg:col-span-1">
+          <TodayOverview />
+          <DashboardStats />
+        </div>
+
+        <div className="space-y-6">
           <WeeklySummary />
           <MonthlyHeatmap />
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2">
-          <DashboardStats />
           <TrendCard />
         </div>
+      </div>
 
+      <div className="mt-6 space-y-6">
         <DashboardWeekly />
         <DashboardMonthly />
       </div>

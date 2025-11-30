@@ -66,7 +66,7 @@ export default function TodayOverview() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl card-light dark:card-dark p-6 shadow-sm">
+      <div className="glass-card p-5 md:p-6 shadow-[0_12px_60px_rgba(0,0,0,0.06)]">
         {error && <p className="mb-2 text-sm text-danger">{error}</p>}
         {loading ? (
           <p className="text-sm text-slate-600 dark:text-slate-300">Loading today&apos;s habits...</p>

@@ -7,9 +7,9 @@ import { getToday } from '../../../utils/dateUtils';
 import { useAuth } from '../../../context/AuthContext';
 
 const actionButtons = [
-  { label: 'Done', value: 'done', classes: 'bg-success hover:brightness-95' },
-  { label: 'Half', value: 'half', classes: 'bg-warning text-slate-900 hover:brightness-95' },
-  { label: 'Missed', value: 'missed', classes: 'bg-danger hover:brightness-95' },
+  { label: 'Done', value: 'done', classes: 'bg-green-100 text-green-700 border-green-300 hover:brightness-95' },
+  { label: 'Half', value: 'half', classes: 'bg-yellow-100 text-yellow-700 border-yellow-300 hover:brightness-95' },
+  { label: 'Missed', value: 'missed', classes: 'bg-red-100 text-red-600 border-red-300 hover:brightness-95' },
 ];
 
 export default function TodayHabitList({ habits = [], onLocalUpdate }) {
@@ -31,22 +31,25 @@ export default function TodayHabitList({ habits = [], onLocalUpdate }) {
   };
 
   return (
-    <div className="rounded-2xl card-light dark:card-dark p-6 shadow-sm">
+    <div className="glass-card p-5 md:p-6 shadow-[0_12px_60px_rgba(0,0,0,0.06)]">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-slate-900">Today&apos;s Habits</h3>
-        {error && <span className="text-xs text-red-600">{error}</span>}
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Today&apos;s Habits</h3>
+        {error && <span className="text-xs text-danger">{error}</span>}
       </div>
       {habits.length === 0 ? (
-        <p className="text-sm text-slate-600">No habits for today.</p>
+        <p className="text-sm text-slate-600 dark:text-slate-300">No habits for today.</p>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {habits.map((habit) => (
             <div
               key={habit.id}
-              className="rounded-xl border border-muted/40 p-4 shadow-sm bg-white dark:bg-dark-surface dark:border-slate-700"
+              className="glass-card p-4 md:p-5 shadow-[0_10px_40px_rgba(0,0,0,0.08)]"
             >
-              <div className="flex items-start justify-between">
-                <div>
+              <div className="flex items-start gap-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-xs font-bold text-white">
+                  {habit.frequency?.[0]?.toUpperCase() || 'H'}
+                </div>
+                <div className="flex-1">
                   <h4 className="text-base font-semibold text-slate-900 dark:text-slate-100">{habit.title}</h4>
                   <p className="text-xs text-slate-600 dark:text-slate-300">
                     {habit.category || 'Uncategorized'} • {habit.frequency || 'daily'}
@@ -58,12 +61,12 @@ export default function TodayHabitList({ habits = [], onLocalUpdate }) {
                   )}
                 </div>
               </div>
-              <div className="mt-3 flex gap-2">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {actionButtons.map((btn) => (
                   <button
                     key={btn.value}
                     onClick={() => handleStatus(habit.id, btn.value)}
-                    className={`rounded-lg px-3 py-1 text-xs font-semibold text-white shadow-sm ${btn.classes}`}
+                    className={`rounded-full border px-6 py-2 text-xs font-semibold shadow-sm ${btn.classes}`}
                   >
                     {btn.label}
                   </button>

@@ -75,7 +75,7 @@ export default function TrendCard() {
   );
 
   return (
-    <div className="rounded-2xl card-light dark:card-dark p-6">
+    <div className="glass-card p-5 md:p-6 shadow-[0_12px_60px_rgba(0,0,0,0.06)]">
       <div className="flex items-center gap-3">
         {icon}
         <div>
