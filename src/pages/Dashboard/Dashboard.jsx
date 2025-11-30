@@ -16,7 +16,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50 px-4 md:px-6 lg:px-10 py-6 text-slate-900">
-      <div className="mx-auto max-w-6xl space-y-6 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-8">
+      {/* <div className="mx-auto max-w-6xl space-y-6 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-8">
         <div className="space-y-6 lg:space-y-8">
           <WelcomeHero />
           <ProgressSummary
@@ -38,7 +38,9 @@ export default function Dashboard() {
           <MonthlyHeatmap />
           <TrendCard />
         </div>
-      </div>
+      </div> */}
+
+      <div className="pt-4"></div>
     </div>
   );
 }
