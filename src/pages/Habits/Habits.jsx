@@ -2,26 +2,10 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { getHabits, deleteHabit, updateHabitHistory } from '../../services/habits';
 import AddHabitModal from '../../components/modals/AddHabitModal';
-import { getLast7Days, getToday } from '../../utils/dateUtils';
-
-const statusColors = {
-  done: 'bg-green-500',
-  half: 'bg-yellow-500',
-  missed: 'bg-red-500',
-  none: 'bg-slate-300',
-};
-
-function WeeklyDots({ history }) {
-  const days = getLast7Days();
-  return (
-    <div className="mt-3 flex gap-2">
-      {days.map((d) => {
-        const status = history?.[d] || 'none';
-        return <span key={d} className={`h-3 w-3 rounded-full ${statusColors[status]}`} title={d} />;
-      })}
-    </div>
-  );
-}
+import { getToday } from '../../utils/dateUtils';
+import DailyPreview from './components/DailyPreview';
+import WeeklyPreview from './components/WeeklyPreview';
+import CustomPreview from './components/CustomPreview';
 
 export default function Habits() {
   const { user } = useAuth();
@@ -131,7 +115,11 @@ export default function Habits() {
                     <p className="text-sm text-slate-600">
                       {habit.category || 'Uncategorized'} • {habit.frequency || 'daily'}
                     </p>
-                    <WeeklyDots history={habit.history || {}} />
+                    {habit.frequency === 'daily' && <DailyPreview history={habit.history || {}} />}
+                    {habit.frequency === 'weekly' && <WeeklyPreview history={habit.history || {}} />}
+                    {habit.frequency === 'custom' && (
+                      <CustomPreview habit={habit} history={habit.history || {}} />
+                    )}
                   </div>
                   <button
                     onClick={() => handleDelete(habit.id)}
