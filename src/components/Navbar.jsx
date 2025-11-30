@@ -56,10 +56,7 @@ export default function Navbar({ onToggleTheme, theme }) {
 
             <div className="hidden items-center gap-2 rounded-full border border-muted/50 bg-white/70 px-3 py-2 shadow-sm dark:bg-dark-surface md:flex">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-                {user?.email?.[0]?.toUpperCase() || 'U'}
-              </div>
-              <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                {user?.email ? user.email.split('@')[0] : 'User'}
+                {user ? 'M' : 'U'}
               </div>
             </div>
 
