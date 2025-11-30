@@ -5,6 +5,7 @@ import SignIn from '../pages/Auth/SignIn';
 import SignUp from '../pages/Auth/SignUp';
 import Confirm from '../pages/Auth/Confirm';
 import ResetPassword from '../pages/Auth/ResetPassword';
+import Dashboard from '../pages/Dashboard';
 
 export const routes = [
   { path: '/auth/signin', element: React.createElement(SignIn) },
@@ -13,11 +14,7 @@ export const routes = [
   { path: '/auth/reset-password', element: React.createElement(ResetPassword) },
   {
     path: '/dashboard',
-    element: React.createElement(
-      ProtectedRouteWrapper,
-      null,
-      React.createElement('div', { className: 'p-6 text-slate-900' }, 'Dashboard')
-    ),
+    element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Dashboard)),
   },
   {
     path: '/test',

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 export default function ResetPassword() {
-  const { resetPassword } = useAuth();
+  const { sendPasswordReset } = useAuth();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -15,8 +15,8 @@ export default function ResetPassword() {
     setError('');
     setMessage('');
     try {
-      await resetPassword(email);
-      setMessage('Qayta tiklash havolasi emailingizga yuborildi.');
+      await sendPasswordReset(email);
+      setMessage('Tiklash havolasi emailingizga yuborildi.');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -66,7 +66,7 @@ export default function ResetPassword() {
             disabled={loading}
             className="w-full rounded-xl bg-blue-500 px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {loading ? 'Yuklanmoqda...' : 'Havola yuborish'}
+            {loading ? 'Yuborilmoqda...' : 'Havola yuborish'}
           </button>
         </form>
 

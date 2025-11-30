@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 export default function SignUp() {
-  const { signUp } = useAuth();
+  const { signUpWithEmailPassword } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -16,8 +16,8 @@ export default function SignUp() {
     setError('');
     setMessage('');
     try {
-      await signUp(email, password);
-      setMessage('Emailingizni tekshiring. Faollashtirish havolasi yuborildi.');
+      await signUpWithEmailPassword(email, password);
+      setMessage('Emailingizni tasdiqlang. Tasdiqlash havolasi yuborildi.');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -31,7 +31,7 @@ export default function SignUp() {
         <div className="mb-6 text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-blue-500">PeakX</p>
           <h1 className="mt-1 text-2xl font-bold text-slate-900">Ro‘yxatdan o‘tish</h1>
-          <p className="mt-2 text-sm text-slate-600">Premium tajribani boshlash uchun akkount yarating.</p>
+          <p className="mt-2 text-sm text-slate-600">Email + parol bilan akkaunt yarating.</p>
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
@@ -82,7 +82,7 @@ export default function SignUp() {
             disabled={loading}
             className="w-full rounded-xl bg-blue-500 px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {loading ? 'Yuklanmoqda...' : 'Ro‘yxatdan o‘tish'}
+            {loading ? 'Yuborilmoqda...' : 'Ro‘yxatdan o‘tish'}
           </button>
         </form>
 

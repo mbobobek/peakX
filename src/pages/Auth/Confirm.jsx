@@ -1,20 +1,52 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../lib/supabaseClient';
+import {
+  auth,
+  applyActionCode,
+  confirmPasswordReset,
+  isSignInWithEmailLink,
+  signInWithEmailLink,
+} from '../../lib/firebaseClient';
 
 export default function Confirm() {
   const navigate = useNavigate();
+  const [mode, setMode] = useState('');
+  const [oobCode, setOobCode] = useState('');
   const [status, setStatus] = useState('loading');
-  const [message, setMessage] = useState('Hisobni tasdiqlash...');
+  const [message, setMessage] = useState('Yuklanmoqda...');
+  const [newPassword, setNewPassword] = useState('');
+
+  const query = useMemo(() => new URLSearchParams(window.location.search), []);
+
+  useEffect(() => {
+    setMode(query.get('mode') || '');
+    setOobCode(query.get('oobCode') || '');
+  }, [query]);
 
   useEffect(() => {
     const url = window.location.href;
 
-    const finishAuth = async () => {
+    const handleVerifyEmail = async () => {
       try {
-        await supabase.auth.exchangeCodeForSession(url);
+        await applyActionCode(auth, oobCode);
         setStatus('success');
-        setMessage('Tasdiqlandi! Dashboardga yo‘naltirilmoqda...');
+        setMessage('Email tasdiqlandi. Endi tizimga kira olasiz.');
+        setTimeout(() => navigate('/auth/signin', { replace: true }), 800);
+      } catch (err) {
+        setStatus('error');
+        setMessage(err.message);
+      }
+    };
+
+    const handleMagicLink = async () => {
+      try {
+        const storedEmail = window.localStorage.getItem('authEmailForSignIn');
+        const email = storedEmail || window.prompt('Email kiriting', '');
+        if (!email) throw new Error('Email topilmadi.');
+        await signInWithEmailLink(auth, email, url);
+        window.localStorage.removeItem('authEmailForSignIn');
+        setStatus('success');
+        setMessage('Kirish yakunlandi. Dashboardga yo‘naltirilmoqda...');
         setTimeout(() => navigate('/dashboard', { replace: true }), 800);
       } catch (err) {
         setStatus('error');
@@ -22,8 +54,34 @@ export default function Confirm() {
       }
     };
 
-    finishAuth();
-  }, [navigate]);
+    if (mode === 'verifyEmail' && oobCode) {
+      handleVerifyEmail();
+    } else if (!mode && isSignInWithEmailLink(auth, url)) {
+      handleMagicLink();
+    } else {
+      setStatus(mode === 'resetPassword' && oobCode ? 'idle' : 'error');
+      setMessage(
+        mode === 'resetPassword' && oobCode
+          ? 'Yangi parolni kiriting.'
+          : 'Noto‘g‘ri yoki eskirgan havola.'
+      );
+    }
+  }, [mode, oobCode, navigate]);
+
+  const handleResetSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('loading');
+    setMessage('Parolni yangilash...');
+    try {
+      await confirmPasswordReset(auth, oobCode, newPassword);
+      setStatus('success');
+      setMessage('Parol yangilandi. Endi tizimga kiring.');
+      setTimeout(() => navigate('/auth/signin', { replace: true }), 800);
+    } catch (err) {
+      setStatus('error');
+      setMessage(err.message);
+    }
+  };
 
   const statusColors =
     status === 'success'
@@ -32,16 +90,44 @@ export default function Confirm() {
       ? 'border-red-100 bg-red-50 text-red-600'
       : 'border-slate-200 bg-white text-slate-700';
 
+  const renderResetForm = mode === 'resetPassword' && oobCode;
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
-        <div className="mb-4 text-center">
+      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl space-y-4">
+        <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-blue-500">PeakX</p>
           <h1 className="mt-2 text-2xl font-bold text-slate-900">Tasdiqlash</h1>
         </div>
+
         <div className={`rounded-xl border px-4 py-4 text-sm font-medium ${statusColors}`}>
           {message}
         </div>
+
+        {renderResetForm && (
+          <form className="space-y-3" onSubmit={handleResetSubmit}>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700" htmlFor="newPassword">
+                Yangi parol
+              </label>
+              <input
+                id="newPassword"
+                type="password"
+                required
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                placeholder="********"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full rounded-xl bg-blue-500 px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Parolni yangilash
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );

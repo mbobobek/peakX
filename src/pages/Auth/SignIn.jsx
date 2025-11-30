@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const { signInWithPassword, signInWithOtp } = useAuth();
+  const { signInWithEmailPassword, resendVerification, signInWithMagicLink } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -17,8 +17,26 @@ export default function SignIn() {
     setError('');
     setMessage('');
     try {
-      await signInWithPassword(email, password);
-      navigate('/dashboard');
+      await signInWithEmailPassword(email, password);
+      navigate('/dashboard', { replace: true });
+    } catch (err) {
+      if (err.code === 'EMAIL_NOT_VERIFIED') {
+        setMessage('Emailingiz tasdiqlanmagan. Tasdiqlash havolasi qayta yuborildi.');
+      } else {
+        setError(err.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    setLoading(true);
+    setError('');
+    setMessage('');
+    try {
+      await resendVerification();
+      setMessage('Tasdiqlash havolasi qayta yuborildi.');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -26,14 +44,14 @@ export default function SignIn() {
     }
   };
 
-  const handleOtp = async (e) => {
+  const handleMagicLink = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     setMessage('');
     try {
-      await signInWithOtp(email);
-      setMessage('Email orqali OTP yuborildi. Pochtangizni tekshiring.');
+      await signInWithMagicLink(email);
+      setMessage('Magic link emailingizga yuborildi.');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -46,8 +64,8 @@ export default function SignIn() {
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
         <div className="mb-6 text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-blue-500">PeakX</p>
-          <h1 className="mt-1 text-2xl font-bold text-slate-900">Tizimga kirish</h1>
-          <p className="mt-2 text-sm text-slate-600">Hisobingizga premium uslubda kiring.</p>
+          <h1 className="mt-1 text-2xl font-bold text-slate-900">Kirish</h1>
+          <p className="mt-2 text-sm text-slate-600">Email va parol orqali yoki magic link bilan kiring.</p>
         </div>
 
         <form className="space-y-4" onSubmit={handlePasswordSignIn}>
@@ -98,29 +116,34 @@ export default function SignIn() {
             disabled={loading}
             className="w-full rounded-xl bg-blue-500 px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {loading ? 'Yuklanmoqda...' : 'Kirish'}
+            {loading ? 'Yuklanmoqda...' : 'Parol bilan kirish'}
           </button>
         </form>
 
-        <div className="mt-4 flex items-center justify-between text-sm">
+        <div className="mt-4 flex flex-col gap-3 text-sm">
           <button
-            onClick={handleOtp}
+            onClick={handleMagicLink}
             disabled={loading || !email}
-            className="font-semibold text-blue-600 transition hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full rounded-xl border border-blue-200 bg-white px-4 py-3 font-semibold text-blue-600 shadow-sm transition hover:border-blue-500 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            OTP bilan kirish
+            Magic link bilan kirish
           </button>
-          <Link to="/auth/reset-password" className="text-slate-600 transition hover:text-blue-600">
-            Parolni unutdingizmi?
-          </Link>
+          <button
+            onClick={handleResendVerification}
+            disabled={loading}
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-700 shadow-sm transition hover:border-blue-500 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            Tasdiqlash havolasini qayta yuborish
+          </button>
+          <div className="flex justify-between">
+            <Link to="/auth/reset-password" className="text-slate-600 transition hover:text-blue-600">
+              Parolni unutdingizmi?
+            </Link>
+            <Link to="/auth/signup" className="text-blue-600 font-semibold transition hover:text-blue-700">
+              Ro‘yxatdan o‘tish
+            </Link>
+          </div>
         </div>
-
-        <p className="mt-6 text-center text-sm text-slate-600">
-          Hisobingiz yo‘qmi?{' '}
-          <Link to="/auth/signup" className="font-semibold text-blue-600 transition hover:text-blue-700">
-            Ro‘yxatdan o‘tish
-          </Link>
-        </p>
       </div>
     </div>
   );
