@@ -5,7 +5,7 @@ import SignIn from '../pages/Auth/SignIn';
 import SignUp from '../pages/Auth/SignUp';
 import Confirm from '../pages/Auth/Confirm';
 import ResetPassword from '../pages/Auth/ResetPassword';
-import Dashboard from '../pages/Dashboard/Dashboard';
+const Dashboard = () => React.createElement('div', { className: 'p-6 text-center' }, 'Dashboard reset…');
 import Habits from '../pages/Habits/Habits';
 import Analytics from '../pages/Analytics/Analytics';
 import Goals from '../pages/Goals/Goals';
