@@ -1,4 +1,12 @@
+import CustomIntervalPreview from './CustomIntervalPreview';
+
 export default function CustomPreview({ history = {}, habit }) {
+  const hasInterval = habit?.startDate && habit?.endDate;
+
+  if (hasInterval) {
+    return <CustomIntervalPreview habit={habit} history={history} />;
+  }
+
   const target = Number(habit?.targetCount) > 0 ? Number(habit.targetCount) : 5;
   const entries = Object.values(history || {});
   const score = entries.reduce((acc, val) => {
@@ -17,7 +25,7 @@ export default function CustomPreview({ history = {}, habit }) {
         {Array.from({ length: target }).map((_, idx) => (
           <span
             key={idx}
-            className={`h-2.5 w-6 rounded ${idx < filled ? 'bg-blue-500' : 'bg-slate-200'}`}
+            className={`h-2.5 w-6 rounded ${idx < filled ? 'bg-primary' : 'bg-muted/30'}`}
           />
         ))}
       </div>

@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.theme-light {
+  @apply bg-surface text-slate-900;
+}
+
+.theme-dark {
+  @apply bg-dark-bg text-slate-100;
+}
+
+.card-light {
+  @apply bg-white border border-slate-200 shadow-sm;
+}
+
+.card-dark {
+  @apply bg-dark-surface border border-slate-700 shadow-inner;
+}

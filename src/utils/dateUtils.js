@@ -40,3 +40,31 @@ export const isConsecutive = (dateA, dateB) => {
   const diff = (b - a) / (1000 * 60 * 60 * 24);
   return diff === 1;
 };
+
+export const isBetween = (date, start, end) => {
+  if (!date || !start || !end) return false;
+  const d = new Date(date);
+  const s = new Date(start);
+  const e = new Date(end);
+  return d >= s && d <= e;
+};
+
+export const daysBetween = (start, end) => {
+  if (!start || !end) return 0;
+  const s = new Date(start);
+  const e = new Date(end);
+  const diff = e.getTime() - s.getTime();
+  return diff >= 0 ? Math.floor(diff / (1000 * 60 * 60 * 24)) : 0;
+};
+
+export const dateRange = (start, end) => {
+  if (!start || !end) return [];
+  const result = [];
+  let current = new Date(start);
+  const last = new Date(end);
+  while (current <= last) {
+    result.push(getISODate(current));
+    current.setDate(current.getDate() + 1);
+  }
+  return result;
+};

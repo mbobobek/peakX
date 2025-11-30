@@ -108,7 +108,10 @@ export default function Habits() {
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
             {habits.map((habit) => (
-              <div key={habit.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+              <div
+                key={habit.id}
+                className="rounded-xl border border-muted/40 bg-white p-4 shadow-sm dark:bg-dark-surface dark:border-slate-700"
+              >
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="text-lg font-semibold text-slate-900">{habit.title}</h3>
@@ -123,7 +126,7 @@ export default function Habits() {
                   </div>
                   <button
                     onClick={() => handleDelete(habit.id)}
-                    className="rounded-lg border border-red-200 px-2 py-1 text-xs font-semibold text-red-600 hover:bg-red-50"
+                    className="rounded-lg border border-danger/30 px-2 py-1 text-xs font-semibold text-danger hover:bg-danger/10"
                   >
                     Delete
                   </button>
@@ -131,19 +134,19 @@ export default function Habits() {
                 <div className="mt-4 flex gap-2">
                   <button
                     onClick={() => handleStatus(habit.id, 'done')}
-                    className="rounded-lg bg-green-500 px-3 py-1 text-xs font-semibold text-white shadow-sm hover:bg-green-600"
+                    className="rounded-lg bg-success px-3 py-1 text-xs font-semibold text-white shadow-sm hover:brightness-95"
                   >
                     Done
                   </button>
                   <button
                     onClick={() => handleStatus(habit.id, 'half')}
-                    className="rounded-lg bg-yellow-500 px-3 py-1 text-xs font-semibold text-white shadow-sm hover:bg-yellow-600"
+                    className="rounded-lg bg-warning px-3 py-1 text-xs font-semibold text-slate-900 shadow-sm hover:brightness-95"
                   >
                     Half
                   </button>
                   <button
                     onClick={() => handleStatus(habit.id, 'missed')}
-                    className="rounded-lg bg-red-500 px-3 py-1 text-xs font-semibold text-white shadow-sm hover:bg-red-600"
+                    className="rounded-lg bg-danger px-3 py-1 text-xs font-semibold text-white shadow-sm hover:brightness-95"
                   >
                     Missed
                   </button>

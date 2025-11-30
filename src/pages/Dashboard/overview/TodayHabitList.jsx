@@ -31,7 +31,7 @@ export default function TodayHabitList({ habits = [], onLocalUpdate }) {
   };
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm">
+    <div className="rounded-2xl card-light dark:card-dark p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-lg font-semibold text-slate-900">Today&apos;s Habits</h3>
         {error && <span className="text-xs text-red-600">{error}</span>}
@@ -41,11 +41,14 @@ export default function TodayHabitList({ habits = [], onLocalUpdate }) {
       ) : (
         <div className="space-y-4">
           {habits.map((habit) => (
-            <div key={habit.id} className="rounded-xl border border-slate-200 p-4 shadow-sm">
+            <div
+              key={habit.id}
+              className="rounded-xl border border-muted/40 p-4 shadow-sm bg-white dark:bg-dark-surface dark:border-slate-700"
+            >
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="text-base font-semibold text-slate-900">{habit.title}</h4>
-                  <p className="text-xs text-slate-600">
+                  <h4 className="text-base font-semibold text-slate-900 dark:text-slate-100">{habit.title}</h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-300">
                     {habit.category || 'Uncategorized'} • {habit.frequency || 'daily'}
                   </p>
                   {habit.frequency === 'daily' && <DailyPreview history={habit.history || {}} />}

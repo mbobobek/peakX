@@ -1,22 +1,22 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { getHabits } from '../../../services/habits';
-import { getLastNDays } from '../../../utils/dateUtils';
+import { getLastNDays, isBetween } from '../../../utils/dateUtils';
 
 function averageScoreByDays(habits, days) {
   if (!habits.length || !days.length) return 0;
   let total = 0;
   let count = 0;
   days.forEach((day) => {
-    const dayScores = habits.map((h) => {
+    habits.forEach((h) => {
+      if (h.frequency === 'custom' && h.startDate && h.endDate && !isBetween(day, h.startDate, h.endDate)) {
+        return;
+      }
+      count += 1;
       const status = h.history?.[day];
-      if (status === 'done') return 1;
-      if (status === 'half') return 0.5;
-      if (status === 'missed') return 0;
-      return 0;
+      if (status === 'done') total += 1;
+      else if (status === 'half') total += 0.5;
     });
-    total += dayScores.reduce((a, b) => a + b, 0);
-    count += habits.length;
   });
   return count ? total / count : 0;
 }
@@ -67,7 +67,7 @@ export default function TrendCard() {
   const icon = (
     <span
       className={`inline-flex h-8 w-8 items-center justify-center rounded-full ${
-        trendText === 'Trend up' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
+        trendText === 'Trend up' ? 'bg-success/20 text-success' : 'bg-danger/20 text-danger'
       }`}
     >
       {trendText === 'Trend up' ? '↑' : '↓'}
@@ -75,7 +75,7 @@ export default function TrendCard() {
   );
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6">
+    <div className="rounded-2xl card-light dark:card-dark p-6">
       <div className="flex items-center gap-3">
         {icon}
         <div>

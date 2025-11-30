@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { getHabits } from '../../../services/habits';
-import { getLast7Days } from '../../../utils/dateUtils';
+import { getLast7Days, isBetween } from '../../../utils/dateUtils';
 
 const colorForScore = (score) => {
-  if (score === null) return 'bg-slate-300';
-  if (score >= 0.75) return 'bg-green-500';
-  if (score >= 0.4) return 'bg-yellow-400';
-  return 'bg-red-400';
+  if (score === null) return 'bg-muted/30';
+  if (score >= 0.75) return 'bg-success';
+  if (score >= 0.4) return 'bg-warning';
+  return 'bg-danger';
 };
 
 export default function WeeklySummary() {
@@ -46,18 +46,28 @@ export default function WeeklySummary() {
       if (!habits.length) return null;
       let total = 0;
       habits.forEach((h) => {
+        if (h.frequency === 'custom' && h.startDate && h.endDate && !isBetween(day, h.startDate, h.endDate)) {
+          return;
+        }
         const status = h.history?.[day];
         if (status === 'done') total += 1;
         else if (status === 'half') total += 0.5;
         else if (status === 'missed') total += 0;
       });
-      const avg = habits.length ? total / habits.length : 0;
-      return avg;
+      const activeCount = habits.filter((h) => {
+        if (h.frequency === 'custom' && h.startDate && h.endDate) {
+          return isBetween(day, h.startDate, h.endDate);
+        }
+        return true;
+      }).length;
+      const denom = activeCount || 0;
+      const avg = denom ? total / denom : 0;
+      return denom ? avg : null;
     });
   }, [days, habits]);
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6">
+    <div className="rounded-2xl card-light dark:card-dark p-6">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-slate-900">Weekly Summary</h3>
         {loading && <span className="text-xs text-slate-500">Loading...</span>}

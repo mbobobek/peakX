@@ -10,9 +10,9 @@ export default function TodayHeader() {
 
   return (
     <div>
-      <p className="text-sm font-semibold uppercase tracking-wide text-blue-500">Today</p>
-      <h2 className="text-2xl font-bold text-slate-900">{formatted}</h2>
-      <p className="text-sm text-slate-600">Here is your focus for today.</p>
+      <p className="text-sm font-semibold uppercase tracking-wide text-primary">Today</p>
+      <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{formatted}</h2>
+      <p className="text-sm text-slate-600 dark:text-slate-300">Here is your focus for today.</p>
     </div>
   );
 }

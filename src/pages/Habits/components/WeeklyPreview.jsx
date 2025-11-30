@@ -3,10 +3,10 @@ import { getLast7Days } from '../../../utils/dateUtils';
 const weekdayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 const statusColors = {
-  done: 'bg-green-500',
-  half: 'bg-yellow-500',
-  missed: 'bg-red-500',
-  none: 'bg-slate-300',
+  done: 'bg-success',
+  half: 'bg-warning',
+  missed: 'bg-danger',
+  none: 'bg-muted/30',
 };
 
 export default function WeeklyPreview({ history = {} }) {

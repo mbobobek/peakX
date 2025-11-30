@@ -32,6 +32,10 @@ export async function createHabit(userId, habit) {
       createdAt: serverTimestamp(),
       history: {},
     };
+    if (habit.frequency === 'custom') {
+      if (habit.startDate) payload.startDate = habit.startDate;
+      if (habit.endDate) payload.endDate = habit.endDate;
+    }
     const ref = await addDoc(habitsCollection(userId), payload);
     return { id: ref.id, ...payload };
   } catch (error) {

@@ -7,6 +7,8 @@ export default function AddHabitModal({ isOpen, onClose, onCreated }) {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [frequency, setFrequency] = useState('daily');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -22,6 +24,12 @@ export default function AddHabitModal({ isOpen, onClose, onCreated }) {
       setError('User not authenticated');
       return;
     }
+    if (frequency === 'custom' && startDate && endDate) {
+      if (new Date(startDate) > new Date(endDate)) {
+        setError('Start date must be before end date');
+        return;
+      }
+    }
     setLoading(true);
     setError('');
     try {
@@ -29,11 +37,15 @@ export default function AddHabitModal({ isOpen, onClose, onCreated }) {
         title: title.trim(),
         category: category.trim(),
         frequency,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
       });
       if (onCreated) onCreated(newHabit);
       setTitle('');
       setCategory('');
       setFrequency('daily');
+      setStartDate('');
+      setEndDate('');
       onClose();
     } catch (err) {
       setError(err.message || 'Failed to create habit');
@@ -44,7 +56,7 @@ export default function AddHabitModal({ isOpen, onClose, onCreated }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-dark-surface">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-slate-900">New Habit</h2>
           <button
@@ -67,7 +79,7 @@ export default function AddHabitModal({ isOpen, onClose, onCreated }) {
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl border border-muted/50 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary"
               placeholder="e.g. Morning Run"
             />
           </div>
@@ -81,7 +93,7 @@ export default function AddHabitModal({ isOpen, onClose, onCreated }) {
               type="text"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl border border-muted/50 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary"
               placeholder="e.g. Health"
             />
           </div>
@@ -94,13 +106,42 @@ export default function AddHabitModal({ isOpen, onClose, onCreated }) {
               id="frequency"
               value={frequency}
               onChange={(e) => setFrequency(e.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl border border-muted/50 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary"
             >
               <option value="daily">Daily</option>
               <option value="weekly">Weekly</option>
               <option value="custom">Custom</option>
             </select>
           </div>
+
+          {frequency === 'custom' && (
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700" htmlFor="startDate">
+                  Start date
+                </label>
+                <input
+                  id="startDate"
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="w-full rounded-xl border border-muted/50 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700" htmlFor="endDate">
+                  End date
+                </label>
+                <input
+                  id="endDate"
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="w-full rounded-xl border border-muted/50 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary"
+                />
+              </div>
+            </div>
+          )}
 
           {error && (
             <div className="rounded-lg border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-600">{error}</div>
