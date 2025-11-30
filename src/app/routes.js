@@ -6,6 +6,7 @@ import SignUp from '../pages/Auth/SignUp';
 import Confirm from '../pages/Auth/Confirm';
 import ResetPassword from '../pages/Auth/ResetPassword';
 import Dashboard from '../pages/Dashboard';
+import Habits from '../pages/Habits/Habits';
 
 export const routes = [
   { path: '/auth/signin', element: React.createElement(SignIn) },
@@ -15,6 +16,10 @@ export const routes = [
   {
     path: '/dashboard',
     element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Dashboard)),
+  },
+  {
+    path: '/habits',
+    element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Habits)),
   },
   {
     path: '/test',
