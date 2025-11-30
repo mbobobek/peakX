@@ -12,6 +12,10 @@ export default function AddHabitModal({ isOpen, onClose, userId, onCreated }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!userId) {
+      setError('User session is not ready yet');
+      return;
+    }
     if (!title.trim()) {
       setError('Title is required');
       return;

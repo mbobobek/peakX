@@ -1,63 +1,4 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-
 export default function SignIn() {
-  const navigate = useNavigate();
-  const { signInWithEmailPassword, resendVerification, signInWithGoogle } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-
-  const handlePasswordSignIn = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    setMessage('');
-    try {
-      await signInWithEmailPassword(email, password);
-      navigate('/dashboard', { replace: true });
-    } catch (err) {
-      if (err.code === 'EMAIL_NOT_VERIFIED') {
-        setMessage('Emailingiz tasdiqlanmagan. Tasdiqlash havolasi qayta yuborildi.');
-      } else {
-        setError(err.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResendVerification = async () => {
-    setLoading(true);
-    setError('');
-    setMessage('');
-    try {
-      await resendVerification();
-      setMessage('Tasdiqlash havolasi qayta yuborildi.');
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogle = async () => {
-    setLoading(true);
-    setError('');
-    setMessage('');
-    try {
-      await signInWithGoogle();
-      navigate('/dashboard', { replace: true });
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
@@ -67,7 +8,7 @@ export default function SignIn() {
           <p className="mt-2 text-sm text-slate-600">Email va parol orqali kiring.</p>
         </div>
 
-        <form className="space-y-4" onSubmit={handlePasswordSignIn}>
+        <form className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-slate-700" htmlFor="email">
               Email
@@ -76,8 +17,6 @@ export default function SignIn() {
               id="email"
               type="email"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
               placeholder="you@example.com"
             />
@@ -91,56 +30,23 @@ export default function SignIn() {
               id="password"
               type="password"
               required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
               placeholder="********"
             />
           </div>
 
-          {error && (
-            <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-600 shadow-sm">
-              {error}
-            </div>
-          )}
-
-          {message && (
-            <div className="rounded-xl border border-yellow-100 bg-yellow-50 px-4 py-3 text-sm text-slate-800 shadow-sm">
-              {message}
-            </div>
-          )}
-
           <button
             type="submit"
-            disabled={loading}
             className="w-full rounded-xl bg-blue-500 px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {loading ? 'Yuklanmoqda...' : 'Parol bilan kirish'}
+            Parol bilan kirish
           </button>
         </form>
 
         <div className="mt-4 flex flex-col gap-3 text-sm">
-          <button
-            onClick={handleResendVerification}
-            disabled={loading}
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-700 shadow-sm transition hover:border-blue-500 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Tasdiqlash havolasini qayta yuborish
-          </button>
-          <button
-            onClick={handleGoogle}
-            disabled={loading}
-            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-700 shadow-sm transition hover:border-blue-500 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Google bilan kirish
-          </button>
-          <div className="flex justify-between">
-            <Link to="/auth/reset-password" className="text-slate-600 transition hover:text-blue-600">
-              Parolni unutdingizmi?
-            </Link>
-            <Link to="/auth/signup" className="text-blue-600 font-semibold transition hover:text-blue-700">
-              Ro‘yxatdan o‘tish
-            </Link>
+          <div className="flex justify-between text-sm text-slate-600">
+            <span>Parolni unutdingizmi?</span>
+            <span>Ro‘yxatdan o‘tish</span>
           </div>
         </div>
       </div>

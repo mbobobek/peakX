@@ -38,6 +38,7 @@ export function AuthProvider({ children }) {
   // LISTEN USER SESSION
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log('[Auth] onAuthStateChanged', currentUser ? currentUser.uid : null);
       setUser(currentUser ?? null);
       setInitializing(false);
     });

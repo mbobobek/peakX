@@ -5,7 +5,7 @@ import SignIn from '../pages/Auth/SignIn';
 import SignUp from '../pages/Auth/SignUp';
 import Confirm from '../pages/Auth/Confirm';
 import ResetPassword from '../pages/Auth/ResetPassword';
-import Dashboard from '../pages/Dashboard';
+import Dashboard from '../pages/Dashboard/Dashboard';
 import Habits from '../pages/Habits/Habits';
 
 export const routes = [
@@ -20,14 +20,6 @@ export const routes = [
   {
     path: '/habits',
     element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Habits)),
-  },
-  {
-    path: '/test',
-    element: React.createElement(
-      ProtectedRouteWrapper,
-      null,
-      React.createElement('div', { className: 'p-6 text-slate-900' }, 'Test')
-    ),
   },
   { path: '/', element: React.createElement(Navigate, { to: '/dashboard', replace: true }) },
   { path: '*', element: React.createElement(Navigate, { to: '/dashboard', replace: true }) },

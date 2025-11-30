@@ -23,6 +23,7 @@ const firebaseConfig = {
 };
 
 if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {
+  console.warn('Firebase config is missing values', firebaseConfig);
   throw new Error('Firebase environment variables are required');
 }
 
