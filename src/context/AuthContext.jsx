@@ -7,11 +7,10 @@ import {
   sendEmailVerification,
   sendPasswordResetEmail,
   signOut as firebaseSignOut,
-  sendSignInLinkToEmail,
-  isSignInWithEmailLink,
-  signInWithEmailLink,
   applyActionCode,
-  confirmPasswordReset
+  confirmPasswordReset,
+  googleProvider,
+  signInWithPopup,
 } from '../lib/firebaseClient';
 
 const AuthContext = createContext(undefined);
@@ -21,9 +20,16 @@ export function AuthProvider({ children }) {
   const [initializing, setInitializing] = useState(true);
 
   // ACTION CODE SETTINGS (universal)
-  const actionCodeSettings = useMemo(
+  const verifyActionCodeSettings = useMemo(
     () => ({
       url: `${import.meta.env.VITE_APP_URL}/auth/confirm`,
+      handleCodeInApp: true,
+    }),
+    []
+  );
+  const resetActionCodeSettings = useMemo(
+    () => ({
+      url: 'https://peak-x.vercel.app/auth/reset-password',
       handleCodeInApp: true,
     }),
     []
@@ -41,7 +47,7 @@ export function AuthProvider({ children }) {
   // SIGN UP (EMAIL + PASSWORD)
   const signUpWithEmailPassword = async (email, password) => {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
-    await sendEmailVerification(cred.user, actionCodeSettings);
+    await sendEmailVerification(cred.user, verifyActionCodeSettings);
 
     // MUST VERIFY BEFORE LOGIN
     await firebaseSignOut(auth);
@@ -54,7 +60,7 @@ export function AuthProvider({ children }) {
     const cred = await signInWithEmailAndPassword(auth, email, password);
 
     if (!cred.user.emailVerified) {
-      await sendEmailVerification(cred.user, actionCodeSettings);
+      await sendEmailVerification(cred.user, verifyActionCodeSettings);
       await firebaseSignOut(auth);
 
       const err = new Error('EMAIL_NOT_VERIFIED');
@@ -68,37 +74,29 @@ export function AuthProvider({ children }) {
   // RESEND VERIFICATION
   const resendVerification = async () => {
     if (!auth.currentUser) throw new Error("No user session");
-    await sendEmailVerification(auth.currentUser, actionCodeSettings);
+    await sendEmailVerification(auth.currentUser, verifyActionCodeSettings);
   };
 
   // PASSWORD RESET (SEND LINK)
   const sendPasswordReset = async (email) => {
-    await sendPasswordResetEmail(auth, email, actionCodeSettings);
+    await sendPasswordResetEmail(auth, email, resetActionCodeSettings);
   };
 
-  // MAGIC LINK START
-  const signInWithMagicLink = async (email) => {
-    await sendSignInLinkToEmail(auth, email, actionCodeSettings);
-    window.localStorage.setItem('authEmailForSignIn', email);
+  // GOOGLE SIGN-IN
+  const signInWithGoogle = async () => {
+    const cred = await signInWithPopup(auth, googleProvider);
+    return cred.user;
   };
 
-  // MAGIC LINK FINISH
-  const completeMagicLinkSignIn = async (email, url) => {
-    if (!isSignInWithEmailLink(auth, url)) {
-      throw new Error('Invalid email link');
-    }
-
-    await signInWithEmailLink(auth, email, url);
-    window.localStorage.removeItem('authEmailForSignIn');
-  };
-
-  // ACTION CODE HANDLER (VERIFY EMAIL OR RESET PASSWORD)
+  // ACTION CODE HANDLER (VERIFY EMAIL, RESET PASSWORD, CHANGE EMAIL)
   const handleActionCode = async (mode, oobCode, newPassword = null) => {
     switch (mode) {
       case 'verifyEmail':
         await applyActionCode(auth, oobCode);
         return 'EMAIL_VERIFIED';
-
+      case 'verifyAndChangeEmail':
+        await applyActionCode(auth, oobCode);
+        return 'EMAIL_CHANGED';
       case 'resetPassword':
         if (!newPassword) return 'NEED_NEW_PASSWORD';
         await confirmPasswordReset(auth, oobCode, newPassword);
@@ -121,12 +119,11 @@ export function AuthProvider({ children }) {
       signInWithEmailPassword,
       resendVerification,
       sendPasswordReset,
-      signInWithMagicLink,
-      completeMagicLinkSignIn,
+      signInWithGoogle,
       handleActionCode,
       signOut,
     }),
-    [user, initializing]
+    [user, initializing, verifyActionCodeSettings, resetActionCodeSettings]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

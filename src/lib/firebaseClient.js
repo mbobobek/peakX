@@ -10,9 +10,8 @@ import {
   sendPasswordResetEmail,
   applyActionCode,
   confirmPasswordReset,
-  sendSignInLinkToEmail,
-  isSignInWithEmailLink,
-  signInWithEmailLink,
+  GoogleAuthProvider,
+  signInWithPopup,
   signOut,
 } from 'firebase/auth';
 
@@ -30,6 +29,7 @@ if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.proj
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 setPersistence(auth, browserLocalPersistence);
+const googleProvider = new GoogleAuthProvider();
 
 export {
   auth,
@@ -40,8 +40,8 @@ export {
   sendPasswordResetEmail,
   applyActionCode,
   confirmPasswordReset,
-  sendSignInLinkToEmail,
-  isSignInWithEmailLink,
-  signInWithEmailLink,
+  GoogleAuthProvider,
+  signInWithPopup,
+  googleProvider,
   signOut,
 };

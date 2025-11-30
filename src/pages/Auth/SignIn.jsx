@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const { signInWithEmailPassword, resendVerification, signInWithMagicLink } = useAuth();
+  const { signInWithEmailPassword, resendVerification, signInWithGoogle } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -44,14 +44,13 @@ export default function SignIn() {
     }
   };
 
-  const handleMagicLink = async (e) => {
-    e.preventDefault();
+  const handleGoogle = async () => {
     setLoading(true);
     setError('');
     setMessage('');
     try {
-      await signInWithMagicLink(email);
-      setMessage('Magic link emailingizga yuborildi.');
+      await signInWithGoogle();
+      navigate('/dashboard', { replace: true });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -65,7 +64,7 @@ export default function SignIn() {
         <div className="mb-6 text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-blue-500">PeakX</p>
           <h1 className="mt-1 text-2xl font-bold text-slate-900">Kirish</h1>
-          <p className="mt-2 text-sm text-slate-600">Email va parol orqali yoki magic link bilan kiring.</p>
+          <p className="mt-2 text-sm text-slate-600">Email va parol orqali kiring.</p>
         </div>
 
         <form className="space-y-4" onSubmit={handlePasswordSignIn}>
@@ -122,18 +121,18 @@ export default function SignIn() {
 
         <div className="mt-4 flex flex-col gap-3 text-sm">
           <button
-            onClick={handleMagicLink}
-            disabled={loading || !email}
-            className="w-full rounded-xl border border-blue-200 bg-white px-4 py-3 font-semibold text-blue-600 shadow-sm transition hover:border-blue-500 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Magic link bilan kirish
-          </button>
-          <button
             onClick={handleResendVerification}
             disabled={loading}
             className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-700 shadow-sm transition hover:border-blue-500 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             Tasdiqlash havolasini qayta yuborish
+          </button>
+          <button
+            onClick={handleGoogle}
+            disabled={loading}
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-semibold text-slate-700 shadow-sm transition hover:border-blue-500 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            Google bilan kirish
           </button>
           <div className="flex justify-between">
             <Link to="/auth/reset-password" className="text-slate-600 transition hover:text-blue-600">
