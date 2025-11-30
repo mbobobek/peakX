@@ -7,9 +7,9 @@ import { getToday } from '../../../utils/dateUtils';
 import { useAuth } from '../../../context/AuthContext';
 
 const actionButtons = [
-  { label: 'Done', value: 'done', classes: 'bg-green-500 hover:bg-green-600' },
-  { label: 'Half', value: 'half', classes: 'bg-yellow-500 hover:bg-yellow-600' },
-  { label: 'Missed', value: 'missed', classes: 'bg-red-500 hover:bg-red-600' },
+  { label: 'Done', value: 'done', classes: 'bg-success hover:brightness-95' },
+  { label: 'Half', value: 'half', classes: 'bg-warning text-slate-900 hover:brightness-95' },
+  { label: 'Missed', value: 'missed', classes: 'bg-danger hover:brightness-95' },
 ];
 
 export default function TodayHabitList({ habits = [], onLocalUpdate }) {

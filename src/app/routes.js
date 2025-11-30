@@ -7,6 +7,11 @@ import Confirm from '../pages/Auth/Confirm';
 import ResetPassword from '../pages/Auth/ResetPassword';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Habits from '../pages/Habits/Habits';
+import Analytics from '../pages/Analytics/Analytics';
+import Goals from '../pages/Goals/Goals';
+import Community from '../pages/Community/Community';
+import Notifications from '../pages/Notifications/Notifications';
+import Profile from '../pages/Profile/Profile';
 
 export const routes = [
   { path: '/auth/signin', element: React.createElement(SignIn) },
@@ -20,6 +25,26 @@ export const routes = [
   {
     path: '/habits',
     element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Habits)),
+  },
+  {
+    path: '/analytics',
+    element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Analytics)),
+  },
+  {
+    path: '/goals',
+    element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Goals)),
+  },
+  {
+    path: '/community',
+    element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Community)),
+  },
+  {
+    path: '/notifications',
+    element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Notifications)),
+  },
+  {
+    path: '/profile',
+    element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Profile)),
   },
   { path: '/', element: React.createElement(Navigate, { to: '/dashboard', replace: true }) },
   { path: '*', element: React.createElement(Navigate, { to: '/dashboard', replace: true }) },
