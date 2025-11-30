@@ -43,7 +43,7 @@ export default function Navbar({ onToggleTheme, theme }) {
             ))}
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <button
               type="button"
               className="relative flex h-10 w-10 items-center justify-center rounded-full border border-muted/50 bg-white/70 text-[#1A1A33] shadow-sm transition hover:border-primary hover:text-primary dark:bg-dark-surface"
@@ -54,11 +54,12 @@ export default function Navbar({ onToggleTheme, theme }) {
               )}
             </button>
 
-            <div className="hidden items-center gap-2 rounded-full border border-muted/50 bg-white/70 px-3 py-2 shadow-sm dark:bg-dark-surface md:flex">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-                {user ? 'M' : 'U'}
-              </div>
-            </div>
+            <button
+              type="button"
+              className="hidden h-10 w-10 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-sm font-semibold text-primary shadow-sm transition hover:border-primary hover:bg-primary/20 md:flex"
+            >
+              {user ? 'M' : 'U'}
+            </button>
 
             <button
               type="button"
