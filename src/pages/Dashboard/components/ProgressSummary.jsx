@@ -13,15 +13,15 @@ export default function ProgressSummary({
   }, [completed, total]);
 
   const remaining = Math.max(0, total - completed);
-  const size = 140;
-  const mobileSize = 110;
+  const size = 190;
+  const mobileSize = 150;
   const strokeWidth = 10;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div className="glass-card p-5 md:p-6 shadow-[0_12px_60px_rgba(0,0,0,0.06)]">
+    <div className="glass-card p-5 md:p-6">
       <div className="flex flex-col items-center gap-6 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col items-center gap-2 text-center md:items-start md:text-left">
           <span className="text-sm font-semibold uppercase tracking-wide text-primary">Progress</span>

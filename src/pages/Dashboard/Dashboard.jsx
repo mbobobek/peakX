@@ -1,6 +1,4 @@
 import DashboardStats from './DashboardStats';
-import DashboardWeekly from './DashboardWeekly';
-import DashboardMonthly from './DashboardMonthly';
 import TodayOverview from './overview/TodayOverview';
 import WeeklySummary from './analytics/WeeklySummary';
 import MonthlyHeatmap from './analytics/MonthlyHeatmap';
@@ -17,9 +15,9 @@ export default function Dashboard() {
   const currentStreak = 0;
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 text-slate-900">
-      <div className="mx-auto max-w-6xl space-y-6 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-6">
-        <div className="space-y-6">
+    <div className="min-h-screen bg-slate-50 px-4 md:px-6 lg:px-10 py-6 text-slate-900">
+      <div className="mx-auto max-w-6xl space-y-6 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-8">
+        <div className="space-y-6 lg:space-y-8">
           <WelcomeHero />
           <ProgressSummary
             completed={todayCompleted}
@@ -28,23 +26,18 @@ export default function Dashboard() {
             bestStreak={bestStreak}
             currentStreak={currentStreak}
           />
-        </div>
-
-        <div className="space-y-6 lg:col-span-1">
-          <TodayOverview />
           <DashboardStats />
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6 lg:space-y-8">
+          <TodayOverview />
+        </div>
+
+        <div className="space-y-6 lg:space-y-8">
           <WeeklySummary />
           <MonthlyHeatmap />
           <TrendCard />
         </div>
-      </div>
-
-      <div className="mt-6 space-y-6">
-        <DashboardWeekly />
-        <DashboardMonthly />
       </div>
     </div>
   );

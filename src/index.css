@@ -19,15 +19,15 @@
 }
 
 .glass-card {
-  @apply bg-white/40 dark:bg-white/10 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-lg rounded-3xl transition-all;
+  @apply bg-white/40 dark:bg-white/10 backdrop-blur-xl border border-white/20 dark:border-white/5 rounded-2xl transition-all shadow-[0_12px_40px_rgba(0,0,0,0.08)];
 }
 
 .glass-light {
-  @apply bg-white/50 backdrop-blur-xl border border-white/30 shadow-lg;
+  @apply bg-white/50 backdrop-blur-xl border border-white/30 rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.08)];
 }
 
 .glass-dark {
-  @apply bg-[#0f0f15]/40 backdrop-blur-xl border border-white/10 shadow-lg;
+  @apply bg-[#0f0f15]/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.08)];
 }
 
 .gradient-primary {
