@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { InformationCircleIcon, BellIcon } from '@heroicons/react/24/outline';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../context/AuthContext';
 import { getHabits, updateHabitHistory } from '../services/habits';
 import { getToday, isBetween, getLast7Days } from '../utils/dateUtils';
@@ -32,7 +32,6 @@ export default function Welcome({ username }) {
   const [error, setError] = useState('');
   const [updatingId, setUpdatingId] = useState(null);
   const [selectedHabitId, setSelectedHabitId] = useState(null);
-  const [showNotifications, setShowNotifications] = useState(false);
 
   const todayKey = useMemo(() => getToday(), []);
   const readableDate = useMemo(() => formatTodayReadable(), []);
@@ -111,60 +110,6 @@ export default function Welcome({ username }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#eef1ff] to-[#f4f6ff] text-slate-900">
       <div className="max-w-6xl mx-auto px-6">
-        {/* NAVBAR */}
-        <div className="max-w-6xl mx-auto px-6">
-          <nav className="w-full py-4">
-            <div className="relative w-full bg-white/80 backdrop-blur-2xl shadow-[0_10px_35px_rgba(0,0,0,0.08)] border border-white/50 rounded-[18px] px-6 py-3 flex items-center justify-between">
-              <Link
-                to="/"
-                className="text-2xl font-bold bg-gradient-to-r from-[#7b8bff] via-[#9b5eff] to-[#7b9dff] bg-clip-text text-transparent"
-              >
-                PeakX
-              </Link>
-
-              <div className="flex items-center gap-8 text-slate-700 font-medium">
-                <Link className="hover:text-[#9b5eff] transition" to="/">
-                  Dashboard
-                </Link>
-                <Link className="hover:text-[#9b5eff] transition" to="/habits">
-                  Habits
-                </Link>
-                <Link className="hover:text-[#9b5eff] transition" to="/analytics">
-                  Analytics
-                </Link>
-                <Link className="hover:text-[#9b5eff] transition" to="/goals">
-                  Goals
-                </Link>
-                <Link className="hover:text-[#9b5eff] transition" to="/community">
-                  Community
-                </Link>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <button
-                  type="button"
-                  onClick={() => setShowNotifications((prev) => !prev)}
-                  className="relative flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/70 text-slate-800 shadow-sm hover:border-[#9b5eff]"
-                >
-                  <BellIcon className="h-5 w-5" />
-                  <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-[#9b5eff] shadow-[0_0_10px_rgba(155,94,255,0.8)]" />
-                </button>
-                <div className="h-10 w-10 rounded-full bg-[#9b5eff]/20 border border-white/60 shadow-inner flex items-center justify-center text-[#9b5eff] font-semibold">
-                  {(displayName || 'P')[0]}
-                </div>
-              </div>
-
-              {showNotifications && (
-                <div className="absolute right-0 top-full mt-3 z-30 w-80">
-                  <NotificationsCard />
-                </div>
-              )}
-            </div>
-          </nav>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6">
         {/* DASHBOARD */}
         <main className="pt-4">
           <div className="grid grid-cols-1 lg:grid-cols-[60%_40%] gap-8 px-6 pt-6">
@@ -223,7 +168,6 @@ export default function Welcome({ username }) {
             <div className="flex flex-col gap-6">
               <WeeklySummaryCard weeklySummary={weeklySummary} />
               <MonthlyActivityCard />
-              {showNotifications && <NotificationsCard />}
             </div>
           </div>
         </main>
@@ -440,31 +384,6 @@ function MonthlyActivityCard() {
       <div className="grid grid-cols-7 gap-1.5">
         {Array.from({ length: 28 }).map((_, idx) => (
           <div key={idx} className="h-4 w-4 rounded bg-slate-200/80" />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function NotificationsCard() {
-  const items = [
-    { title: 'Reminder', desc: 'Meditation in 15 mins.', time: '9:45 AM' },
-    { title: 'Habit Complete', desc: '"Morning Stretch"', time: '8:00 AM' },
-    { title: 'New Achievement', desc: 'Unlocked: "Early Bird"', time: 'Yesterday' },
-  ];
-
-  return (
-    <div className="rounded-2xl bg-white/70 backdrop-blur-xl shadow-xl p-4 border border-white/60">
-      <h2 className="text-lg font-semibold mb-2 text-slate-900">Notifications</h2>
-      <div className="space-y-3 text-sm text-slate-800">
-        {items.map((item, idx) => (
-          <div key={idx} className="rounded-xl border border-white/70 bg-white/60 p-3 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div className="font-semibold text-slate-900">{item.title}</div>
-              <div className="text-xs text-slate-500">{item.time}</div>
-            </div>
-            <div className="text-slate-700 mt-1">{item.desc}</div>
-          </div>
         ))}
       </div>
     </div>
