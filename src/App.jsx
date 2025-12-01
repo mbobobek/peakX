@@ -1,7 +1,15 @@
-import Welcome from "./pages/Welcome";
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import AppRouter from './app/router';
 
 function App() {
-   return <Welcome username="Murod" />;
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRouter />
+      </AuthProvider>
+    </BrowserRouter>
+  );
 }
 
 export default App;

@@ -5,7 +5,7 @@ import SignIn from '../pages/Auth/SignIn';
 import SignUp from '../pages/Auth/SignUp';
 import Confirm from '../pages/Auth/Confirm';
 import ResetPassword from '../pages/Auth/ResetPassword';
-const Dashboard = () => React.createElement('div', { className: 'p-6 text-center' }, 'Dashboard reset…');
+import Welcome from '../pages/Welcome';
 import Habits from '../pages/Habits/Habits';
 import Analytics from '../pages/Analytics/Analytics';
 import Goals from '../pages/Goals/Goals';
@@ -13,11 +13,17 @@ import Community from '../pages/Community/Community';
 import Notifications from '../pages/Notifications/Notifications';
 import Profile from '../pages/Profile/Profile';
 
+const Dashboard = () => React.createElement('div', { className: 'p-6 text-center' }, 'Dashboard reset�?�');
+
 export const routes = [
   { path: '/auth/signin', element: React.createElement(SignIn) },
   { path: '/auth/signup', element: React.createElement(SignUp) },
   { path: '/auth/confirm', element: React.createElement(Confirm) },
   { path: '/auth/reset-password', element: React.createElement(ResetPassword) },
+  {
+    path: '/',
+    element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Welcome, { username: 'Murod' })),
+  },
   {
     path: '/dashboard',
     element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Dashboard)),
@@ -46,8 +52,7 @@ export const routes = [
     path: '/profile',
     element: React.createElement(ProtectedRouteWrapper, null, React.createElement(Profile)),
   },
-  { path: '/', element: React.createElement(Navigate, { to: '/dashboard', replace: true }) },
-  { path: '*', element: React.createElement(Navigate, { to: '/dashboard', replace: true }) },
+  { path: '*', element: React.createElement(Navigate, { to: '/', replace: true }) },
 ];
 
 function ProtectedRouteWrapper({ children }) {
