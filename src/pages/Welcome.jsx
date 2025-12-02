@@ -154,59 +154,72 @@ export default function Welcome({ username }) {
   };
 
   return (
-    <div className="min-h-[calc(100vh-90px)] text-slate-900 pt-12 md:pt-8">
+    <div className="min-h-[calc(100vh-90px)] text-slate-900 pt-12 md:pt-16">
       <div className="max-w-6xl mx-auto px-6">
 
         <main>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-[40%_40%_20%]">
-            <div className="order-1 w-full md:col-span-2 lg:col-span-3">
-              <WelcomeHeader
-                displayName={displayName}
-                readableDate={readableDate}
-              />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[65%_35%]">
 
-            {error && (
-              <div className="order-1 w-full md:col-span-2 lg:col-span-3 rounded-2xl border border-red-100 bg-red-50/80 px-4 py-3 text-sm text-red-700">
-                {error}
+            {/* LEFT */}
+            <div className="flex flex-col gap-5">
+
+              <div className="order-1 md:order-1 lg:order-none">
+                <WelcomeHeader
+                  displayName={displayName}
+                  readableDate={readableDate}
+                />
               </div>
-            )}
 
-            <div className="order-3 md:order-2 lg:order-1 w-full">
-              <ProgressCard
-                total={totalHabits}
-                completed={completedHabits}
-                percent={percent}
-              />
-            </div>
+              {error && (
+                <div className="w-full rounded-2xl border border-red-100 bg-red-50/80 px-4 py-3 text-sm text-red-700">
+                  {error}
+                </div>
+              )}
 
-            <div className="order-2 md:order-3 lg:order-2 w-full">
               {loading ? (
                 <div className="rounded-3xl bg-white/60 backdrop-blur-xl p-6 min-h-[160px]">
                   Loading habits...
                 </div>
               ) : (
-                <TodayHabitsSection
-                  todayHabits={todayHabits}
-                  selectedHabitId={selectedHabitId}
-                  onSelectHabit={(id) =>
-                    setSelectedHabitId((prev) =>
-                      prev === id ? null : id
-                    )
-                  }
-                  updatingId={updatingId}
-                  onUpdate={handleStatusChange}
-                />
+                <div className="flex flex-col gap-6">
+
+                  <div className="grid grid-cols-1 lg:grid-cols-[42%_58%] gap-4 items-start">
+                    <div className="w-full order-3 md:order-2 lg:order-none">
+                      <ProgressCard
+                        total={totalHabits}
+                        completed={completedHabits}
+                        percent={percent}
+                      />
+                    </div>
+
+                    <div className="w-full order-2 md:order-3 lg:order-none">
+                      <TodayHabitsSection
+                        todayHabits={todayHabits}
+                        selectedHabitId={selectedHabitId}
+                        onSelectHabit={(id) =>
+                          setSelectedHabitId((prev) =>
+                            prev === id ? null : id
+                          )
+                        }
+                        updatingId={updatingId}
+                        onUpdate={handleStatusChange}
+                      />
+                    </div>
+                  </div>
+
+                </div>
               )}
             </div>
 
-            <div className="order-4 w-full flex flex-col gap-3 md:col-start-2 md:row-start-2 lg:col-start-auto lg:row-start-auto">
+            {/* RIGHT */}
+            <div className="flex flex-col gap-3 w-full order-4 md:order-4 lg:order-none lg:max-w-[360px] lg:ml-auto">
               <WeeklySummaryCard 
                 weeklySummary={weeklySummary}
                 todayKey={todayKey}
               />
               <MonthlyActivityCard />
             </div>
+
           </div>
         </main>
 
