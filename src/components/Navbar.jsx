@@ -24,9 +24,9 @@ export default function Navbar({ onToggleTheme, theme }) {
 
   return (
     <>
-      <header className="sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-6 mt-3">
-          <div className="w-full flex h-[72px] items-center justify-between rounded-2xl border border-white/40 bg-white/30 px-6 shadow-[0_8px_20px_rgba(0,0,0,0.12)] backdrop-blur-2xl">
+      <header className="fixed top-8 left-0 right-0 z-40 backdrop-blur-xl">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="w-full flex h-[72px] items-center justify-between rounded-2xl bg-white/20 border border-white/30 shadow-[0_8px_30px_rgba(0,0,0,0.08)] px-6">
             <div className="flex shrink-0 items-center gap-2 text-lg font-bold bg-gradient-to-r from-[#7b8bff] via-[#9b5eff] to-[#7b9dff] bg-clip-text text-transparent">
               PeakX
             </div>
